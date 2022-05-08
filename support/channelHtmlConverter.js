@@ -9,7 +9,7 @@ const TEMPLATE_FILE = "channel-template.html";
 const STATIC_FILES_DIRECTORY = "static_files";
 const OUTPUT_DIRECTORY = "output_html";
 
-const userProfilesDict = {
+const defaultUserProfilesDict = {
   U6P1QNPGQ: { display_name: "tmansfield-williams" },
   UFD6HJWEA: { display_name: "sbrunner" },
   UFCRNJBB9: { display_name: "Arno" },
@@ -22,7 +22,8 @@ const userProfilesDict = {
 //
 /////////////////////////////////////////////
 
-function hydrateAllUsers(data) {
+function hydrateAllUsers(data, userProfilesDict) {
+  userProfilesDict = userProfilesDict ?? defaultUserProfilesDict;
   data.forEach(function (item) {
     if (item["user_profile"]) {
       userProfilesDict[item.user] = item["user_profile"];
@@ -163,15 +164,15 @@ let template = {
   "<>": "div",
   class: function (obj) {
     let classes = "item";
-    if ( obj["replies"] ){
+    if (obj["replies"]) {
       classes += " parent";
-    }else if (obj["parent_user_id"]){
+    } else if (obj["parent_user_id"]) {
       classes += " response";
-    } 
-    return classes; 
+    }
+    return classes;
   },
   // this is used for anchor links
-  id: function (obj) { 
+  id: function (obj) {
     return convertTimestamp(obj.ts);
   },
   html: [
@@ -254,11 +255,11 @@ function processThreads(messages) {
   return threadedMessages;
 }
 
-module.exports = function (messagesCombined, channelName) {
+module.exports = function (messagesCombined, channelName, userProfilesDict) {
   let root = getTemplateHtml(path.join(STATIC_FILES_DIRECTORY, TEMPLATE_FILE));
   let messagesNode = root.querySelector(".messages");
 
-  hydrateAllUsers(messagesCombined);
+  hydrateAllUsers(messagesCombined, userProfilesDict);
   parseEmojis(messagesCombined);
   parseHtmlEncodedChars(messagesCombined);
   messagesCombined = processThreads(messagesCombined);

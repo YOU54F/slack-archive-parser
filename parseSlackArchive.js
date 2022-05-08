@@ -75,7 +75,7 @@ function createDirIfItDoesntExist(path) {
 //
 /////////////////////////////////////////////
 
-function readChannelAndDownloadImages(baseDir, channelName) {
+function readChannelAndDownloadImages(baseDir, channelName, userProfilesDict) {
   let dirName = path.join(baseDir, channelName);
 
   fs.readdir(dirName, function (err, items) {
@@ -104,26 +104,43 @@ function readChannelAndDownloadImages(baseDir, channelName) {
       // third: convert to html
       //
       log.info(`Converting ${messagesCombined.length} JSON messages to HTML.`);
-      htmlConverter(messagesCombined, channelName);
+      htmlConverter(messagesCombined, channelName, userProfilesDict);
     });
   });
 }
 
-function processChannelSubdir(baseDir, channelName) {
-  readChannelAndDownloadImages(baseDir, channelName);
+function processChannelSubdir(baseDir, channelName, userProfilesDict) {
+  readChannelAndDownloadImages(baseDir, channelName, userProfilesDict);
 }
 
 function processArchiveDir(archiveDir) {
   log.debug(`Processing slack archive directory '${archiveDir}'.`);
 
+  const createUserProfilesDict = () => {
+    const users = JSON.parse(fs.readFileSync(`${archiveDir}/users.json`, "utf-8"));
+    return users.reduce((acc, cur) => ({ ...acc, [cur.id]: cur.profile }), {});
+  };
+  let userProfilesDict;
+  try {
+    userProfilesDict = createUserProfilesDict();
+  } catch (error) {
+    throw new error("error");
+  }
+
   fs.readdir(archiveDir, function (err, items) {
     let channelDirs = items.filter((i) => fs.statSync(path.join(archiveDir, i)).isDirectory());
     log.debug(`Processing slack archive, ${channelDirs.length} channel(s) found.\n`);
 
-    channelDirs.forEach((c) => processChannelSubdir(archiveDir, c));
+    channelDirs.forEach((c) => processChannelSubdir(archiveDir, c, userProfilesDict));
 
     htmlConverterSidebar(channelDirs);
   });
+}
+function processUserFile(userFilePath) {
+  log.debug(`Processing user file '${userFilePath}'.`);
+
+  const users = JSON.parse(fs.readFileSync(userFilePath, "utf-8"));
+  return users.reduce((acc, cur) => ({ ...acc, [cur.id]: cur.profile }), {});
 }
 
 ////////////////////////////////////////////////
