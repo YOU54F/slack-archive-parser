@@ -8,7 +8,7 @@ const TEMPLATE_FILE = "archive-template.html";
 const STATIC_FILES_DIRECTORY = "static_files";
 const OUTPUT_DIRECTORY = "output_html";
 
-var root = getTemplateHtml(path.join(STATIC_FILES_DIRECTORY, TEMPLATE_FILE));
+var root = getTemplateHtml(path.join(path.resolve(__dirname), "..", STATIC_FILES_DIRECTORY, TEMPLATE_FILE));
 
 /////////////////////////////////////////////
 //

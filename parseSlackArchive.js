@@ -8,7 +8,6 @@ const path = require("path");
 
 const downloadQueue = require("./support/downloadQueue");
 const htmlConverter = require("./support/channelHtmlConverter");
-const htmlConverterSidebar = require("./support/archiveHtmlConverter");
 
 const OUTPUT_DIRECTORY = "output_html";
 const STATIC_FILES_DIRECTORY = "static_files";
@@ -117,6 +116,7 @@ function processArchiveDir(archiveDir) {
   log.debug(`Processing slack archive directory '${archiveDir}'.`);
 
   const userProfilesDict = processUsersFile(archiveDir);
+  const htmlConverterSidebar = require("./support/archiveHtmlConverter");
 
   fs.readdir(archiveDir, function (err, items) {
     let channelDirs = items.filter((i) => fs.statSync(path.join(archiveDir, i)).isDirectory());
@@ -173,7 +173,7 @@ dirName = path.normalize(dirName);
 createDirIfItDoesntExist(OUTPUT_DIRECTORY);
 
 STATIC_FILES.forEach((f) => {
-  fs.copyFile(path.join(STATIC_FILES_DIRECTORY, f), path.join(OUTPUT_DIRECTORY, f), () =>
+  fs.copyFile(path.join(path.resolve(__dirname), STATIC_FILES_DIRECTORY, f), path.join(OUTPUT_DIRECTORY, f), () =>
     log.debug("Copied static file to output folder", f)
   );
 });

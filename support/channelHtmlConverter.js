@@ -207,7 +207,7 @@ let template = {
 };
 
 function getTemplateHtml(fileName) {
-  var rawData = fs.readFileSync(fileName);
+  var rawData = fs.readFileSync(path.join(path.resolve(__dirname), "..", fileName));
   return HTMLParser.parse(rawData);
 }
 

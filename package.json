@@ -1,8 +1,11 @@
 {
   "name": "slack-archive-parser",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "description": "Parses JSON archive files from Slack, downloads images and creates an HTML with threads and images embedded.",
   "main": "parseSlackArchive.js",
+  "bin": {
+    "slack-archive-parser": "./parseSlackArchive.js"
+  },
   "author": "Javier Gutierrez <javier_gutierrez@esri.com>",
   "license": "MIT License",
   "dependencies": {
