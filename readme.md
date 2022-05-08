@@ -17,29 +17,18 @@ Slack message supported features:
 
 ## Instructions
 
-To run this tool, first clone the repository.
-
-```
-git clone https://github.com/gutierrezj/slack-archive-parser.git
-```
-
-Then run
-
-```
-cd slack-archive-parser
-npm install
-```
+To run this tool
 
 For a single channel conversion run:
 
-```
-node parseSlackArchive.js input_data/<channel-directory-name>
+```sh
+npx slack-archive-parser input_data/<channel-directory-name>
 ```
 
 For an archive with multiple channel directories
 
-```
-node parseSlackArchive.js input_data/ -a
+```sh
+npx slack-archive-parser input_data/ -a
 ```
 
 The output is always written to `build`.
