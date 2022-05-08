@@ -8,8 +8,9 @@ const path = require("path");
 
 const downloadQueue = require("./support/downloadQueue");
 const htmlConverter = require("./support/channelHtmlConverter");
+const htmlConverterSidebar = require("./support/archiveHtmlConverter");
 
-const OUTPUT_DIRECTORY = "output_html";
+const OUTPUT_DIRECTORY = "build";
 const STATIC_FILES_DIRECTORY = "static_files";
 const STATIC_FILES = ["styles.css", "file-icon.webp", "archive-scripts.js", "channel-scripts.js"];
 const DEFAULT_USER_PROFILE_DICT_FILE = "./defaultUserProfilesDict.json";
@@ -116,7 +117,6 @@ function processArchiveDir(archiveDir) {
   log.debug(`Processing slack archive directory '${archiveDir}'.`);
 
   const userProfilesDict = processUsersFile(archiveDir);
-  const htmlConverterSidebar = require("./support/archiveHtmlConverter");
 
   fs.readdir(archiveDir, function (err, items) {
     let channelDirs = items.filter((i) => fs.statSync(path.join(archiveDir, i)).isDirectory());
@@ -184,4 +184,5 @@ if (argv.a) {
   let channelName = path.basename(dirName);
   let baseDir = path.dirname(dirName);
   processChannelSubdir(baseDir, channelName);
+  htmlConverterSidebar([channelName]);
 }

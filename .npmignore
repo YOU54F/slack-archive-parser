@@ -1,6 +1,6 @@
 node_modules/
 input_data/*
-output_html/*
+build/*
 temp/
 foo
 .prettierrc

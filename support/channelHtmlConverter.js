@@ -7,7 +7,7 @@ const emoji = require("node-emoji");
 
 const TEMPLATE_FILE = "channel-template.html";
 const STATIC_FILES_DIRECTORY = "static_files";
-const OUTPUT_DIRECTORY = "output_html";
+const OUTPUT_DIRECTORY = "build";
 const DEFAULT_USER_PROFILE_DICT_FILE = "./defaultUserProfilesDict.json";
 
 /////////////////////////////////////////////
@@ -17,7 +17,7 @@ const DEFAULT_USER_PROFILE_DICT_FILE = "./defaultUserProfilesDict.json";
 /////////////////////////////////////////////
 
 function hydrateAllUsers(data, userProfilesDict) {
-  userProfilesDict = userProfilesDict ?? JSON.parse(fs.readFileSync(path.join(process.cwd(), DEFAULT_USER_PROFILE_DICT_FILE), "utf-8"));
+  userProfilesDict = userProfilesDict ?? {};
   data.forEach(function (item) {
     if (item["user_profile"]) {
       userProfilesDict[item.user] = item["user_profile"];

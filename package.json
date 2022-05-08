@@ -1,6 +1,6 @@
 {
   "name": "slack-archive-parser",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Parses JSON archive files from Slack, downloads images and creates an HTML with threads and images embedded.",
   "main": "parseSlackArchive.js",
   "bin": {

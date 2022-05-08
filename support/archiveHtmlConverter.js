@@ -6,7 +6,7 @@ const fs = require("fs");
 
 const TEMPLATE_FILE = "archive-template.html";
 const STATIC_FILES_DIRECTORY = "static_files";
-const OUTPUT_DIRECTORY = "output_html";
+const OUTPUT_DIRECTORY = "build";
 
 var root = getTemplateHtml(path.join(path.resolve(__dirname), "..", STATIC_FILES_DIRECTORY, TEMPLATE_FILE));
 
@@ -40,7 +40,7 @@ module.exports = function (channelNames) {
   var messagesNode = root.querySelector(".channel-list");
   messagesNode.appendChild(transformedHtml);
 
-  let outputHtmlFile = path.join(OUTPUT_DIRECTORY, "archive.html");
+  let outputHtmlFile = path.join(OUTPUT_DIRECTORY, "index.html");
   fs.writeFileSync(outputHtmlFile, root.toString());
-  log.info("Done writing the archive file:", outputHtmlFile);
+  log.info("Done writing the index file:", outputHtmlFile);
 };

@@ -2,6 +2,7 @@
 
 Tool that takes Slack JSON archives and converts them into a web site with channels.
 Slack message supported features:
+
 - [x] Single channel
 - [x] Multiple channels
 - [x] Threads (non-collapsible)
@@ -14,10 +15,10 @@ Slack message supported features:
 - [ ] Reactions
 - [x] permalink to messages
 
-
 ## Instructions
 
 To run this tool, first clone the repository.
+
 ```
 git clone https://github.com/gutierrezj/slack-archive-parser.git
 ```
@@ -38,9 +39,7 @@ node parseSlackArchive.js input_data/<channel-directory-name>
 For an archive with multiple channel directories
 
 ```
-node parseSlackArchive.js input_data/ -a 
+node parseSlackArchive.js input_data/ -a
 ```
 
-
-The output is always written to `output_html`.
-
+The output is always written to `build`.
