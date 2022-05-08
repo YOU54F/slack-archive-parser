@@ -8,13 +8,7 @@ const emoji = require("node-emoji");
 const TEMPLATE_FILE = "channel-template.html";
 const STATIC_FILES_DIRECTORY = "static_files";
 const OUTPUT_DIRECTORY = "output_html";
-
-const defaultUserProfilesDict = {
-  U6P1QNPGQ: { display_name: "tmansfield-williams" },
-  UFD6HJWEA: { display_name: "sbrunner" },
-  UFCRNJBB9: { display_name: "Arno" },
-  UB3EE965A: { display_name: "gmiele" },
-};
+const DEFAULT_USER_PROFILE_DICT_FILE = "./defaultUserProfilesDict.json";
 
 /////////////////////////////////////////////
 //
@@ -23,7 +17,7 @@ const defaultUserProfilesDict = {
 /////////////////////////////////////////////
 
 function hydrateAllUsers(data, userProfilesDict) {
-  userProfilesDict = userProfilesDict ?? defaultUserProfilesDict;
+  userProfilesDict = userProfilesDict ?? JSON.parse(fs.readFileSync(path.join(process.cwd(), DEFAULT_USER_PROFILE_DICT_FILE), "utf-8"));
   data.forEach(function (item) {
     if (item["user_profile"]) {
       userProfilesDict[item.user] = item["user_profile"];

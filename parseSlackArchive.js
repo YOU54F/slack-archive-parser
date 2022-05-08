@@ -13,7 +13,7 @@ const htmlConverterSidebar = require("./support/archiveHtmlConverter");
 const OUTPUT_DIRECTORY = "output_html";
 const STATIC_FILES_DIRECTORY = "static_files";
 const STATIC_FILES = ["styles.css", "file-icon.webp", "archive-scripts.js", "channel-scripts.js"];
-
+const DEFAULT_USER_PROFILE_DICT_FILE = "./defaultUserProfilesDict.json";
 /////////////////////////////////////////////
 //
 // file downloading
@@ -116,16 +116,7 @@ function processChannelSubdir(baseDir, channelName, userProfilesDict) {
 function processArchiveDir(archiveDir) {
   log.debug(`Processing slack archive directory '${archiveDir}'.`);
 
-  const createUserProfilesDict = () => {
-    const users = JSON.parse(fs.readFileSync(`${archiveDir}/users.json`, "utf-8"));
-    return users.reduce((acc, cur) => ({ ...acc, [cur.id]: cur.profile }), {});
-  };
-  let userProfilesDict;
-  try {
-    userProfilesDict = createUserProfilesDict();
-  } catch (error) {
-    throw new error("Failed to create user profiles dictionary from archive folder users.json file", error);
-  }
+  const userProfilesDict = processUsersFile(archiveDir);
 
   fs.readdir(archiveDir, function (err, items) {
     let channelDirs = items.filter((i) => fs.statSync(path.join(archiveDir, i)).isDirectory());
@@ -136,11 +127,16 @@ function processArchiveDir(archiveDir) {
     htmlConverterSidebar(channelDirs);
   });
 }
-function processUserFile(userFilePath) {
-  log.debug(`Processing user file '${userFilePath}'.`);
 
-  const users = JSON.parse(fs.readFileSync(userFilePath, "utf-8"));
-  return users.reduce((acc, cur) => ({ ...acc, [cur.id]: cur.profile }), {});
+function processUsersFile(archiveDir) {
+  log.debug(`Processing user file '${archiveDir}/users.json'.`);
+  try {
+    const users = JSON.parse(fs.readFileSync(`${archiveDir}/users.json`, "utf-8"));
+    return users.reduce((acc, cur) => ({ ...acc, [cur.id]: cur.profile }), {});
+  } catch (error) {
+    console.log("Failed to create user profiles dictionary from archive folder users.json file", error.message);
+    return undefined;
+  }
 }
 
 ////////////////////////////////////////////////
