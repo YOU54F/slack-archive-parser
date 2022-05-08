@@ -124,7 +124,7 @@ function processArchiveDir(archiveDir) {
   try {
     userProfilesDict = createUserProfilesDict();
   } catch (error) {
-    throw new error("error");
+    throw new error("Failed to create user profiles dictionary from archive folder users.json file", error);
   }
 
   fs.readdir(archiveDir, function (err, items) {
